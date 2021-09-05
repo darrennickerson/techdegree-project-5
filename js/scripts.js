@@ -1,8 +1,10 @@
 const gallery = document.getElementById("gallery");
 let employees = [];
-const documentBody = document.body;
+const api = "https://randomuser.me/api/?results=12&nat=us,ca";
 
-fetch("https://randomuser.me/api/?results=12")
+// Get the user data from the api.
+
+fetch(api)
   .then((res) => res.json())
   .then((res) => {
     res.results.map((person) => {
@@ -35,7 +37,7 @@ function displayEmployee(data, index) {
   gallery.insertAdjacentHTML("beforeend", html);
 }
 
-function modalPopup(data) {
+function modalPopup(data, index) {
   let modal = `
 
       <div class="modal-container">
@@ -51,33 +53,71 @@ function modalPopup(data) {
             <p class="modal-text">${data.email}</p>
             <p class="modal-text cap">${data.location.city}</p>
             <hr>
-            <p class="modal-text">${data.phone}</p>
+            <p class="modal-text">${data.cell}</p>
             <p class="modal-text">${data.location.street.number} ${
     data.location.street.name
   }, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
             <p class="modal-text">Birthday: ${formatDob(data.dob.date)}</p>
         </div>
     </div>
+    <div class="modal-btn-container">
+    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+</div>
+</div>
+    '`;
 
-    `;
+  // Closes the modal
 
   document.body.insertAdjacentHTML("beforeend", modal);
-  console.log(document.body.lastChild);
   document.getElementById("modal-close-btn").addEventListener("click", () => {
     document.body.lastChild.remove();
   });
+
+  //Displays next employee
+
+  const modalPrev = document.getElementById("modal-prev");
+  const modalNext = document.getElementById("modal-next");
+
+  modalPrev.addEventListener("click", () => {
+    let newIndex = parseInt(index) - 1;
+    if (index > 0) {
+      document.body.removeChild(document.body.lastElementChild);
+      modalPopup(employees[newIndex], newIndex);
+    } else {
+      modalPrev.style.display = "none";
+    }
+  });
+
+  // Event Listener for the prev and next buttons
+
+  modalNext.addEventListener("click", () => {
+    let nextIndex = parseInt(index) + 1;
+    console.log(index);
+    console.log(nextIndex);
+    if (index < employees.length - 1) {
+      document.body.removeChild(document.body.lastElementChild);
+      modalPopup(employees[nextIndex], nextIndex);
+    } else {
+      modalNext.style.display = "none";
+    }
+  });
 }
+
+// Event Listener for clicks on a employee card. Displays the modal
 
 gallery.addEventListener("click", (e) => {
   const card = e.target.closest(".card");
-  let personData = card.getAttribute("data-person");
-  personData = employees[personData];
-  modalPopup(personData);
+  let index = card.getAttribute("data-person");
+  let personData = employees[index];
+  modalPopup(personData, index);
 });
 
 /**
  * Helper functions
  */
+
+// Formats the employees DOB so it's readable
 
 function formatDob(dob) {
   const year = dob.substring(0, 4);
