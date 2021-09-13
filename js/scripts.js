@@ -23,7 +23,12 @@ fetch(api)
 gallery.addEventListener("click", (e) => {
   const card = e.target.closest(".card");
   let index = card.getAttribute("data-person");
-  let personData = employees[index];
+  let personData;
+  if (employeeArray !== "undefined" && employeeArray.length > 0) {
+    personData = employeeArray[index];
+  } else {
+    personData = employees[index];
+  }
   modalPopup(personData, index);
 });
 

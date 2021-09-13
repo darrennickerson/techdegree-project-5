@@ -63,13 +63,18 @@ function modalPopup(data, index) {
     document.body.lastChild.remove();
   });
 
-  //Displays next employee
   nextModal(employees, index);
 }
 
 function nextModal(data, index) {
   const modalNav = document.querySelector(".modal-btn-container");
 
+  if (employeeArray.length > 0) {
+    data = employeeArray;
+  }
+  console.log(index);
+  console.log(data);
+  console.log(data.length);
   if (index > 0 && index < data.length - 1) {
     modalNav.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
       <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
