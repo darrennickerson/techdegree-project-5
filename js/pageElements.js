@@ -26,7 +26,7 @@ function displayEmployee(data, index) {
 }
 
 /**
- *
+ * modalPopup() creates a modal popup for the employee card
  * @param {*} data
  * @param {*} index
  */
@@ -48,7 +48,6 @@ function modalPopup(data, index) {
     data.location.postcode;
 
   let modal = `
-  
     <div class="modal-container">
       <div class="modal">
           <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -78,7 +77,7 @@ function modalPopup(data, index) {
 }
 
 /**
- *
+ *  nextModal cycles through the employees without closing the modal
  * @param {*} data The array that is being used
  *  @param {*} index The index from the employee cards
  */
@@ -132,14 +131,12 @@ function nextModal(data, index) {
   }
 }
 
-// Search functions
-
+// Displays the search box
 const search = `
 <form action="#" method="get">
     <input type="search" id="search-input" class="search-input" placeholder="Search...">
     <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
 </form>`;
 document.querySelector(".search-container").innerHTML = search;
-
 const searchInput = document.getElementById("search-input");
 let employeeArray = [];
