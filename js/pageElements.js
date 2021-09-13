@@ -4,12 +4,10 @@
  * @param {*} index The index of the person object
  */
 function displayEmployee(data, index) {
-  const picture = data.picture.large;
-
   const html = `
           <div class="card" data-person="${index}">
           <div class="card-img-container">
-              <img class="card-img" src="${picture}" alt="profile picture">
+              <img class="card-img" src="${data.picture.large}" alt="profile picture">
           </div>
           <div class="card-info-container">
               <h3 id="name" class="card-name cap">${data.name.first} ${data.name.last}</h3>
@@ -72,9 +70,7 @@ function nextModal(data, index) {
   if (employeeArray.length > 0) {
     data = employeeArray;
   }
-  console.log(index);
-  console.log(data);
-  console.log(data.length);
+
   if (index > 0 && index < data.length - 1) {
     modalNav.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
       <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
@@ -114,6 +110,9 @@ function nextModal(data, index) {
       let newIndex = parseInt(index) - 1;
       modalPopup(data[newIndex], newIndex);
     });
+  }
+  if (data.length === 1) {
+    document.querySelector(".modal-btn-container").style.display = "none";
   }
 }
 
