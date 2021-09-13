@@ -3,7 +3,6 @@ let employees = [];
 const api = "https://randomuser.me/api/?results=12&nat=us,ca";
 
 // Get the user data from the api.
-
 fetch(api)
   .then((res) => res.json())
   .then((res) => {
@@ -19,7 +18,6 @@ fetch(api)
   });
 
 // Event Listener for clicks on a employee card. Displays the modal
-
 gallery.addEventListener("click", (e) => {
   const card = e.target.closest(".card");
   let index = card.getAttribute("data-person");
@@ -32,10 +30,38 @@ gallery.addEventListener("click", (e) => {
   modalPopup(personData, index);
 });
 
+//event listener for employee searches
 searchInput.addEventListener("keyup", (e) => {
-  e.preventDefault();
   employeeSearch(e.target.value);
 });
+
+// search employees
+function employeeSearch(term) {
+  employeeArray = [];
+  gallery.innerHTML = "";
+  searchValue = term;
+
+  // Pick out the students who match the search results
+  searchResults = employees.filter((x) => {
+    let fullName = x.name.first.toLowerCase() + x.name.last.toLowerCase();
+
+    // if the student matches put them into an array
+    if (fullName.includes(searchValue.toLowerCase())) {
+      employeeArray.push(x);
+      let newIndex = employeeArray.indexOf(x);
+      const noResults = document.getElementById("no-results");
+      if (noResults !== null) {
+        noResults.remove();
+      }
+      displayEmployee(x, newIndex);
+    }
+
+    //If there are no search matches
+    if (employeeArray.length === 0) {
+      gallery.innerHTML = `<div id="no-results"><h1>No Results</h1> <p>Try your search again or <a href="/">Go Back</a></p></div>`;
+    }
+  });
+}
 
 /**
  * Helper functions

@@ -4,15 +4,20 @@
  * @param {*} index The index of the person object
  */
 function displayEmployee(data, index) {
+  const picture = data.picture.large;
+  const name = data.name.first + " " + data.name.last;
+  const email = data.email;
+  const location = data.location.city + ", " + data.location.state;
+
   const html = `
           <div class="card" data-person="${index}">
           <div class="card-img-container">
-              <img class="card-img" src="${data.picture.large}" alt="profile picture">
+              <img class="card-img" src="${picture}" alt="profile picture">
           </div>
           <div class="card-info-container">
-              <h3 id="name" class="card-name cap">${data.name.first} ${data.name.last}</h3>
-              <p class="card-text">${data.email}</p>
-              <p class="card-text cap">${data.location.city}, ${data.location.state}</p>
+              <h3 id="name" class="card-name cap">${name}</h3>
+              <p class="card-text">${email}</p>
+              <p class="card-text cap">${location}</p>
           </div>
       </div>
           `;
@@ -26,25 +31,35 @@ function displayEmployee(data, index) {
  * @param {*} index
  */
 function modalPopup(data, index) {
+  const picture = data.picture.large;
+  const name = data.name.first + " " + data.name.last;
+  const email = data.email;
+  const city = data.location.city;
+  const cell = data.cell;
+  const address =
+    data.location.street.number +
+    " " +
+    data.location.street.name +
+    " " +
+    data.location.city +
+    " " +
+    data.location.state +
+    " " +
+    data.location.postcode;
+
   let modal = `
   
     <div class="modal-container">
       <div class="modal">
           <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
           <div class="modal-info-container">
-              <img class="modal-img" src="${
-                data.picture.large
-              }" alt="profile picture">
-              <h3 id="name" class="modal-name cap">${data.name.first} ${
-    data.name.last
-  }</h3>
-              <p class="modal-text">${data.email}</p>
-              <p class="modal-text cap">${data.location.city}</p>
+              <img class="modal-img" src="${picture}" alt="profile picture">
+              <h3 id="name" class="modal-name cap">${name}</h3>
+              <p class="modal-text">${email}</p>
+              <p class="modal-text cap">${city}</p>
               <hr>
-              <p class="modal-text">${data.cell}</p>
-              <p class="modal-text">${data.location.street.number} ${
-    data.location.street.name
-  }, ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
+              <p class="modal-text">${cell}</p>
+              <p class="modal-text">${address}</p>
               <p class="modal-text">Birthday: ${formatDob(data.dob.date)}</p>
           </div>
       </div>
@@ -56,17 +71,20 @@ function modalPopup(data, index) {
   // Closes the modal
 
   document.body.insertAdjacentHTML("beforeend", modal);
-
   document.getElementById("modal-close-btn").addEventListener("click", () => {
     document.body.lastChild.remove();
   });
-
   nextModal(employees, index);
 }
 
+/**
+ *
+ * @param {*} data The array that is being used
+ *  @param {*} index The index from the employee cards
+ */
 function nextModal(data, index) {
   const modalNav = document.querySelector(".modal-btn-container");
-
+  //checks if the user is searching for a employee
   if (employeeArray.length > 0) {
     data = employeeArray;
   }
@@ -74,9 +92,9 @@ function nextModal(data, index) {
   if (index > 0 && index < data.length - 1) {
     modalNav.innerHTML = `<button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
       <button type="button" id="modal-next" class="modal-next btn">Next</button>`;
-
     const modalPrev = document.getElementById("modal-prev");
 
+    //cycles through the employees in the index order
     modalPrev.addEventListener("click", () => {
       document.body.removeChild(document.body.lastElementChild);
       let newIndex = parseInt(index) - 1;
@@ -85,7 +103,6 @@ function nextModal(data, index) {
     const modalNext = document.getElementById("modal-next");
     modalNext.addEventListener("click", () => {
       let nextIndex = parseInt(index) + 1;
-
       document.body.removeChild(document.body.lastElementChild);
       modalPopup(data[nextIndex], nextIndex);
     });
@@ -96,7 +113,6 @@ function nextModal(data, index) {
     const modalNext = document.getElementById("modal-next");
     modalNext.addEventListener("click", () => {
       let nextIndex = parseInt(index) + 1;
-
       document.body.removeChild(document.body.lastElementChild);
       modalPopup(data[nextIndex], nextIndex);
     });
@@ -127,31 +143,3 @@ document.querySelector(".search-container").innerHTML = search;
 
 const searchInput = document.getElementById("search-input");
 let employeeArray = [];
-
-// search employees
-function employeeSearch(term) {
-  employeeArray = [];
-  gallery.innerHTML = "";
-  searchValue = term;
-
-  // Pick out the students who match the search results
-  searchResults = employees.filter((x) => {
-    let fullName = x.name.first.toLowerCase() + x.name.last.toLowerCase();
-
-    // if the student matches put them into an array
-    if (fullName.includes(searchValue.toLowerCase())) {
-      employeeArray.push(x);
-      let newIndex = employeeArray.indexOf(x);
-      const noResults = document.getElementById("no-results");
-      if (noResults !== null) {
-        noResults.remove();
-      }
-      displayEmployee(x, newIndex);
-    }
-
-    //If there are no search matches
-    if (employeeArray.length === 0) {
-      gallery.innerHTML = `<div id="no-results"><h1>No Results</h1> <p>Try your search again or <a href="/">Go Back</a></p></div>`;
-    }
-  });
-}
