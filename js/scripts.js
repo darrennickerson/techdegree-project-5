@@ -32,6 +32,7 @@ gallery.addEventListener("click", (e) => {
 
 //event listener for employee searches
 searchInput.addEventListener("keyup", (e) => {
+  e.preventDefault();
   employeeSearch(e.target.value);
 });
 
