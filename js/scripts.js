@@ -75,5 +75,5 @@ function formatDob(dob) {
   const month = dob.substring(5, 7);
   const day = dob.substring(8, 10);
 
-  return year + "/" + month + "/" + day;
+  return month + "/" + day + "/" + year;
 }
