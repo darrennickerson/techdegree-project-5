@@ -40,11 +40,11 @@ function modalPopup(data, index) {
     data.location.street.number +
     " " +
     data.location.street.name +
-    " " +
+    ", " +
     data.location.city +
-    " " +
+    ", " +
     data.location.state +
-    " " +
+    ", " +
     data.location.postcode;
 
   let modal = `
@@ -57,7 +57,7 @@ function modalPopup(data, index) {
               <p class="modal-text">${email}</p>
               <p class="modal-text cap">${city}</p>
               <hr>
-              <p class="modal-text">${cell}</p>
+              <p class="modal-text">${formatCell(cell)}</p>
               <p class="modal-text">${address}</p>
               <p class="modal-text">Birthday: ${formatDob(data.dob.date)}</p>
           </div>

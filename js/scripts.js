@@ -14,7 +14,7 @@ fetch(api)
   })
   .catch((error) => {
     console.log("something went wrong", error);
-    gallery.innerHTML = "<h2>Something went wrong";
+    gallery.innerHTML = "<h2>Something went wrong</h2>";
   });
 
 // Event Listener for clicks on a employee card. Displays the modal
@@ -59,7 +59,7 @@ function employeeSearch(term) {
 
     //If there are no search matches
     if (employeeArray.length === 0) {
-      gallery.innerHTML = `<div id="no-results"><h1>No Results</h1> <p>Try your search again or <a href="/">Go Back</a></p></div>`;
+      gallery.innerHTML = `<div id="no-results"><h1>No Results</h1> <p>Try your search again</p></div>`;
     }
   });
 }
@@ -76,4 +76,11 @@ function formatDob(dob) {
   const day = dob.substring(8, 10);
 
   return month + "/" + day + "/" + year;
+}
+function formatCell(cell) {
+  const formatedCell = cell.replace(/-|\(|\)|\s/g, "");
+  areaCode = formatedCell.substring(0, 3);
+  prefix = formatedCell.substring(3, 6);
+  ending = formatedCell.substring(6, 10);
+  return `(${areaCode}) ${prefix}-${ending}`;
 }
